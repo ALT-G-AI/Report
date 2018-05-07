@@ -1,0 +1,25 @@
+Report Structure
+1. Intro
+2. Data structure
+   1. Balanced data
+   2. Sentence lengths
+3. Data Processing
+   1. “Pipelines” - lowercase, tokens, stemming etc
+   2. Word2Vec
+   3. Pre-trained vs not
+   4. Padded vs Windowed
+   5. Label numbers vs one-hot ?
+4. First Models
+   1. Bag of words
+   2. Forest
+   3. Window DNN
+   4. LSTM, RNN, GRU
+5. Extensions
+   1. Markov Model
+   2. BoW + NN
+   3. Grid searching
+   4. Ensemble
+   5. KPCA
+6. Conclusion
+7. Future work
+8. References
