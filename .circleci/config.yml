@@ -10,4 +10,4 @@ jobs:
             - run: make
             - run: make count
             - store_artifacts:
-                path: master.pdf
+                path: ml_report.pdf
