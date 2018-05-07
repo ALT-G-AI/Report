@@ -1,0 +1,13 @@
+version: 2
+jobs:
+    build:
+        docker:
+            - image: camilstaps/texlive
+        steps:
+            - checkout
+            - run: apt-get update; apt-get install make perl ca-certificates -y
+            - run: chktex *.tex
+            - run: make
+            - run: make count
+            - store_artifacts:
+                path: master.pdf
