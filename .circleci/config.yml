@@ -5,7 +5,7 @@ jobs:
             - image: camilstaps/texlive
         steps:
             - checkout
-            - run: apt-get update; apt-get install make perl ca-certificates -y
+            - run: apt-get update; apt-get install make perl ca-certificates python-pygments -y
             - run: chktex *.tex
             - run: make
             - run: make count
