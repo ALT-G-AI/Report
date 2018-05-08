@@ -7,3 +7,4 @@ _minted-*
 *.bcf
 *.out
 *.run.xml
+auto/*
