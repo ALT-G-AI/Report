@@ -1,8 +1,44 @@
 \section{Extensions}
 \label{sec:extensions}
+  
+\subsection{Beta Distribution Bag-of-words}
+The bag-of-words model described in Section \ref{sec:bag_of_words} has some substantial issues regarding the probability estimates $p_w^a$. Most notably is its bias towards words which occur only very few times, and only with a single author.
 
-  \subsection{Markov Model}
-  \label{sec:markov_model}
+A good example is the word "marker". In the training set Lovecraft uses it exactly once, but both Shelly and Poe don't use it at all. Is it fair for this to be considered a "signature word" for Lovecraft? It could simply be that each author uses it with a similar frequency and it just happens that it was only observed once.
+
+A better estimate for the usage probabilities can be provided by beta distributions, which provide a probability distribution for the actual occurrence rate of an event. By making some assumptions and simplifications - such as the usage of words by an author being independent of one another and a uniform prior distribution - it is possible to easily form this revised estimate. While these simplifications are obviously not a complete reflection of the real world, the posterior probability given by this model is likely to still be an improvement over that in Section \ref{sec:bag_of_words}.
+
+The beta distribution is denoted by $Beta(\alpha , \beta)$ and has its mean at $\mathbb{E}(Beta(\alpha, \beta)) = \frac{\alpha}{\alpha + \beta}$. For $n$ random, independent trials with a uniform prior in which some outcome $x$ occurs $s$ times, the posterior probability is given by:
+
+\begin{equation*}
+p(x) = Beta(\alpha + s, \beta + n - s)
+\end{equation*}
+
+And has expectation:
+\begin{equation*}
+\mathbb{E}(p(x)) = \frac{\alpha+s}{\alpha + \beta + n}
+\end{equation*}
+
+This can be used to form a new estimation for the word frequency for each author that doesn't unduly favour extremely rare words. Additionally, this formula still holds even when a word has not been observed in an author's vocabulary. Because of this the hierarchical scoring system presented in Section \ref{sec:bag_of_words} is not necessary and a direct comparison of probabilities between each author may be made. This also allows loss to be calculated.
+
+Utilising this new metric the confusion matrix , accuracy and loss are as in Table \ref{tab:beta_res}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{0cm}}
+\multicolumn{1}{m{1cm}}{} & \multicolumn{1}{m{1cm}}{EAP} & \multicolumn{1}{m{1cm}}{HPL} & \multicolumn{1}{m{1cm}}{MWS} &\\[5pt]
+\cline{2-4}
+EAP & 4657 & 675 & 968 & \\[5pt]
+\cline{2-4}
+HPL & 286 & 3914 & 333 & \\[5pt]
+\cline{2-4}
+MWS & 285 & 316 & 4229 & \\[5pt]
+\cline{2-4}
+\end{tabular}
+\caption{Results for bag-of-words classifier with beta distributions, stemming and lemmatisation enabled.\\Loss 3.34 Accuracy: 82\% }
+\label{tab:beta_res}
+\end{table}
+
 
   \subsection{BoW + NN}
   \label{sec:bow_nn}

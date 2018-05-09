@@ -24,12 +24,12 @@ During prediction, however, it is likely that certain words will not have occurr
 score(s,a) &= \sum\limits_{w\in s}
 \begin{cases}
 log(p_{w}^a) & w\in W_a \\
-0 & w \not\in W_a
+0 & otherwise
 \end{cases}\\
 hits(s,a) &= \sum\limits_{w\in s}
 \begin{cases}
 1 & w\in W_a \\
-0 & w \not\in W_a
+0 & otherwise
 \end{cases}\\
 cands(s) &= a^* \in A : hits(s,a^*) = \max_a(hits(s,a))\\
 winner(s) &= \underset{a}{\arg\max}(score(s,a))\quad \forall a \in cands(s)
