@@ -162,3 +162,24 @@ MWS & 1019 & 525 & 3286 & \\[5pt]
 
 \subsection{RNN}
 \label{sec:rnn}
+  An obvious choice for textual input data was a recursive neural network. Tensorflow made it simple to write a model which allowed a choice of recursive cell (basic, LSTM or GRU) and so all three were investigated. 
+  
+  Figure \ref{fig:rnn-structure} shows the structure of the RNN. As recommended by one of the PhD student project advisors, outputs were generated from a dense network fed by the internal state of the recursive cell. This dense network used a sigmoid activation function so that its outputs ranged between 0 and 1 and so could learn confidences for each author.
+  
+  \begin{figure}[ht]
+    \includegraphics[width=0.45\textwidth]{Figures/rnn.png}
+    \caption{Recursive neural network structure}
+    \label{fig:rnn-structure}
+  \end{figure}
+  
+    The RNN was trained using cross-entropy loss and an Adam optimizer. Data were fed in using randomized batches so that the data could all fit into GPU memory and to improve generalisation performance. Initially a batch size of 100 sentences was used but this led to over fitting of each batch even for relatively small networks. When the batch size was increased to 200 this problem lessened significantly because this larger batch provided a much more representative sample of the dataset.
+    
+    In early testing it was predictably found that the basic RNN cell was out performed by LSTM and GRU cells. Less obviously, changing the weights initialiser from Xavier (Tensorflow default) to He initialisation harmed performance.
+    
+    The prediction accuracy on the training dataset was observed to be slightly higher than on the test dataset, particularly as the number of neurons used in the recursive cell was increased. However, this difference remained constant as networks were made larger and trained for longer - not showing the characteristic increase in testing error as models overfit training data. As a result of this behaviour early stopping was not implemented. However the overfitting was combatted by imposing dropout during training. 
+    
+    Early experimentation also investigated the format of the encoded sentences. A very significant (almost 30\%) accuracy improvement was gained by using whole padded sentences instead of short windows into sentences. Presumably the recursive networks were remembering some features throughout the sentence.
+    
+    By the end of this early phase, the RNN achieved 68\% accuracy, with similar precision and recall scores: indicating no bias towards one class over another.
+    
+    
