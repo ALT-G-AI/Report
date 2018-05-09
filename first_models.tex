@@ -1,14 +1,64 @@
 \section{First Models}
 \label{sec:first_models}
 
-  \subsection{Bag of Words}
-  \label{sec:bag_of_words}
+\subsection{Bag of Words}
+\label{sec:bag_of_words}
+From the examination of the data in Section \ref{sec:word_frequency}, a bag-of-words classifier seems plausible. Through a direct comparison of the frequencies with which each author uses the words in a given sentence, a prediction may be formed.
 
-  \subsection{Forest}
-  \label{sec:forest}
+Let $\phi_w^a$ be the number of occurrences of some word $w$ in the corpus of sentences attributed to author $a$. The estimated probability of an author's usage of a word, $w^*$, is given by:
 
-  \subsection{DNN}
-  \label{sec:dnn}
+\begin{equation*}
+p_{w*}^a = \frac{\phi_w^a}{\sum\limits_{w} \phi_w^a}
+\end{equation*}
 
-  \subsection{RNN}
-  \label{sec:rnn}
+The estimated probability of a sentence, $s$, is given by:
+
+\begin{align*}
+p_{s}^a &= \prod\limits_{w\in s} p_{w}^a \\
+log(p_{s}^a &)= \sum\limits_{w\in s} log(p_{w}^a)
+\end{align*}
+
+During prediction, however, it is likely that certain words will not have occurred in the training data: a "miss". An intuitive way to handle this is to score authors first on the number of words they "hit", and then by the probability of those words. Denoting the words used by each author in the training set as $W_a$ and the set of authors $A$, the following scoring mechanism is introduced:
+
+\begin{align*}
+score(s,a) &= \sum\limits_{w\in s}
+\begin{cases}
+log(p_{w}^a) & w\in W_a \\
+0 & w \not\in W_a
+\end{cases}\\
+hits(s,a) &= \sum\limits_{w\in s}
+\begin{cases}
+1 & w\in W_a \\
+0 & w \not\in W_a
+\end{cases}\\
+cands(s) &= a^* \in A : hits(s,a^*) = \max_a(hits(s,a))\\
+winner(s) &= \underset{a}{\arg\max}(score(s,a))\quad \forall a \in cands(s)
+\end{align*}
+
+Running this model on the training set with 3 cross-validation passes (such that each third of the training data is predicted based on a model trained on the remaining two-thirds) yields the confusion matrix in Table \ref{tab:bow_cw}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{0cm}}
+\multicolumn{1}{m{1cm}}{} & \multicolumn{1}{m{1cm}}{EAP} & \multicolumn{1}{m{1cm}}{HPL} & \multicolumn{1}{m{1cm}}{MWS} &\\[5pt]
+\cline{2-4}
+EAP & 4910 & 630 & 760 & \\[5pt]
+\cline{2-4}
+HPL & 476 & 3774 & 283 & \\[5pt]
+\cline{2-4}
+MWS & 615 & 381 & 3834 & \\[5pt]
+\cline{2-4}
+\end{tabular}
+\caption{Confusion matrix for bag-of-words classifier. Overall accuracy 79.9\%}
+\label{tab:bow_cw}
+\end{table}
+
+\subsection{Forest}
+\label{sec:forest}
+
+\subsection{Windowed Neural Network}
+In order to recognise tell-tale structures in the way sentences are composed, a classifier must be able to examine words in context. By running a window over the sentence tokens, this can be achieved.
+\label{sec:dnn}
+
+\subsection{RNN}
+\label{sec:rnn}
