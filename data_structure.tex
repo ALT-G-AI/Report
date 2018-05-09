@@ -10,9 +10,9 @@ The data is provided in the form described in Table \ref{tab:data_form}.
 \hline 
 \textbf{id} & \textbf{text} & \textbf{author} \\ 
 \hline 
-id26305 & This process, however, afforded me \ldots & EAP \\ 
+id26305 & This process, however, \ldots & EAP \\ 
 \hline 
-id17569 & It never once occurred to me that \ldots & HPL \\ 
+id17569 & It never once occurred \ldots & HPL \\ 
 \hline 
 \ldots & \ldots & \ldots \\ 
 \hline 
@@ -29,7 +29,7 @@ There is a slight bias in the dataset, but it is approximately balanced as shown
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.6\textwidth]{Figures/Data_Structure/balance.png}
+\includegraphics[width=\columnwidth]{Figures/Data_Structure/balance.png}
 \caption{Number of sentences in the training set, by author}
 \label{fig:balance}
 \end{figure}
@@ -41,7 +41,7 @@ A broad examination of the data offers some insight into the difference between 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth]{Figures/Data_Structure/senlen.png}
+\includegraphics[width=\columnwidth]{Figures/Data_Structure/senlen.png}
 \begin{tabular}{|c|c|c|}
 \hline  
 \textbf{Author} & \textbf{Mean} & \textbf{Standard Deviation} \\ 
@@ -67,12 +67,12 @@ Figure \ref{fig:wordfreq_before} shows the most frequent words used by each auth
 
 \begin{figure}[h]
 \centering
-\begin{subfigure}[b]{0.49\textwidth}
+\begin{subfigure}[b]{\columnwidth}
 \includegraphics[width=\textwidth]{Figures/Data_Structure/wordfreq_before.png}
 \caption{20 most used words, by author, before stopword removal}
 \label{fig:wordfreq_before}
-\end{subfigure}
-\begin{subfigure}[b]{0.49\textwidth}
+\end{subfigure} \\
+\begin{subfigure}[b]{\columnwidth}
 \includegraphics[width=\textwidth]{Figures/Data_Structure/wordfreq_after.png}
 \caption{20 most used words, by author, after stopword removal}
 \label{fig:wordfreq_after}
