@@ -24,12 +24,12 @@ During prediction, however, it is likely that certain words will not have occurr
 score(s,a) &= \sum\limits_{w\in s}
 \begin{cases}
 log(p_{w}^a) & w\in W_a \\
-0 & w \not\in W_a
+0 & otherwise
 \end{cases}\\
 hits(s,a) &= \sum\limits_{w\in s}
 \begin{cases}
 1 & w\in W_a \\
-0 & w \not\in W_a
+0 & otherwise
 \end{cases}\\
 cands(s) &= a^* \in A : hits(s,a^*) = \max_a(hits(s,a))\\
 winner(s) &= \underset{a}{\arg\max}(score(s,a))\quad \forall a \in cands(s)
@@ -57,6 +57,7 @@ MWS & 615 & 381 & 3834 & \\[5pt]
 \label{sec:forest}
 
 \subsection{Windowed Neural Network}
+\label{sec:win_nn}
 In order to recognise tell-tale structures in the way sentences are composed, a classifier must be able to examine words in context. By running a window over the sentence tokens, this can be achieved.
 
 Using a word embedding of $d$ dimensions, a window of $n$ words is provided as the input to a neural network. These words are flattened into a $d \times n$ wide layer, and fed through some number of hidden Relu units before being fed to a classifying output layer. This overall structure is described in Figure \ref{fig:win_nn_structure}.
@@ -154,7 +155,7 @@ MWS & 1019 & 525 & 3286 & \\[5pt]
 \end{tabular}
 \caption{Pre-trained GloVe encoder, stemming and lemmatisation enabled.\\Loss: 1.90 Accuracy: 69\%}
 \end{subtable}
-\caption{Results for windowed neural net classifier.}
+\caption{Results for windowed neural net classifier. Single hidden layer with 100 neurons, window width of 5. 150 training epochs.}
 \label{tab:window_res}
 \end{table}
 
