@@ -5,3 +5,9 @@ The ensemble could be expended to include more classifiers and some additional
 features so that it could perhaps learn which classifier to prefer depending
 upon the features of the input sentence.
 
+At the moment the probabilistic model assumes that the probabilities that words
+occur in a sentence are independent of each-other. This is clearly not the case.
+One way to extend the model would be to consider closer approximations to the
+true distribution for example by considering pairs of words instead of words on
+their own or by considering a joint distribution with a sentiment or topic
+analysis. 
