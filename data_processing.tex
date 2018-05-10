@@ -9,7 +9,7 @@ Data processing is used in this project to help improve feature extraction from 
 
   \subsection{Word2Vec}
   \label{sec:word2vec}
- 	Word2Vec allows the vectorization of the sentences for use in the neural networks. It converts sentences into a one-hot vector encoding that also shows how some of the words relate to each other. 
+  Words must be embedded into a numerical space for the majority of learning methods. Word2Vec uses a two-layer neural network to autoencode the words against their neighbours in the input corpus. Word2Vec produces word encodings in large vector-spaces. Semantic analogies are preserved in the space, (i.e. $queen - king + man = woman$). We trained Word2Vec on our own corpus to embed words for most of our algorithms, however, for our windowed deep neural network, we used the `Global Vectors for Word Representation` (GloVe) algorithm using a pre-trained vector of 6B words from wikipedia. These two methods are compared in Table \ref{tab:window_res}.
 
   \subsection{Sentence Transformations}
   \label{sec:sentence_transformations}
@@ -17,4 +17,3 @@ Data processing is used in this project to help improve feature extraction from 
 
   \subsection{Label Encoding}
   \label{sec:label_encoding}
-  
