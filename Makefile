@@ -7,6 +7,7 @@ clean:
 
 build:
 	pdflatex -shell-escape -draftmode ml_report.tex -halt-on-error
+	biber ml_report
 	pdflatex -shell-escape ml_report.tex -halt-on-error
 
 watch:
