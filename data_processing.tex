@@ -1,12 +1,15 @@
 \section{Data Processing}
 \label{sec:data_processing}
 
+Data processing is used in this project to help improve feature extraction from sentences as due to their length as much meta data as possible needs to be created to aid classification.
+
   \subsection{Preprocessing}
   \label{sec:preprocessing}
-    \textbf{Renamed from ``Pipelines''}
+    Pipelines are used within the project to help remove extraneous data. They are fully interoperable so can be done any order and allow you to remove stop words, lemmatize or stem the words, encode the sentences or produce windows. All these processes use generators which keeps resource use efficient.
 
   \subsection{Word2Vec}
   \label{sec:word2vec}
+ 	Word2Vec allows the vectorization of the sentences for use in the neural networks. It converts sentences into a one-hot vector encoding that also shows how some of the words relate to each other. 
 
   \subsection{Sentence Transformations}
   \label{sec:sentence_transformations}
