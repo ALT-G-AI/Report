@@ -87,7 +87,27 @@ MWS & 286 & 582 & 3962 & \\[5pt]
   
   \subsection{Translation}
   \label{sec:translation}
-  To try and improve the results from some of the classifiers the data an enhanced data set was created. To create the enhanced data set the original sentences were translated to and from an alternative language. This is from suggestions from a differing Kaggle competition 'Toxic Comments' \cite{Jigsaw2017}
+  To try and improve the results from some of the classifiers the data an enhanced data set was created. To create the enhanced data set the original sentences were translated to and from an alternative language. This is from suggestions from a differing Kaggle competition 'Toxic Comments' \cite{Jigsaw2017}. 
+  
+  The thought of doing this is as the sentences are very short we can get a more data to perform analysis on. To do this \textit{TextBlob} was used to translate the sentences in to German, Spanish and French and then back from each respective language into English. 
+  
+  Although an issue may be that some style lost in translation, it appears as though there is some enhancement in the loss by using translations of around 0.03 with the Bag-of-words Feature Kernal Neural Net as seen in the Table \ref{tab:bow_nn_res_tran}. The translation may also help prevent the over fitting that is seen without it.
+  
+ begin{table}[h]
+\centering
+\begin{tabular}{m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{0cm}}
+\multicolumn{1}{m{1cm}}{} & \multicolumn{1}{m{1cm}}{EAP} & \multicolumn{1}{m{1cm}}{HPL} & \multicolumn{1}{m{1cm}}{MWS} &\\[5pt]
+\cline{2-4}
+EAP & 0.82561218 & 0.12039488 & 0.05399294 & \\[5pt]
+\cline{2-4}
+HPL & 0.06722222 & 0.84674603 & 0.08603175 & \\[5pt]
+\cline{2-4}
+MWS & 0.05424431 & 0.1199793 & 0.8257764 & \\[5pt]
+\cline{2-4}
+\end{tabular}
+\caption{Results for bag-of-words feature kernel neural net, stemming and lemmatisation enabled, using a translated enhanced data set.\\Loss 0.43 Accuracy: 83\% }
+\label{tab:bow_nn_res_tran}
+\end{table}
 
   \subsection{kPCA}
   \label{sec:kpca}
