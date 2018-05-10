@@ -150,6 +150,31 @@ MWS & 286 & 582 & 3962 & \\[5pt]
     affect. Perhaps the problems training with this higher learning rate also
     reduced overfitting.
 
+    Following from these observations from the grid search, recursive neural
+    networks were trained using a learning rate of 0.0001 over 10 times as many
+    epochs using a variety of lower dropout rates. These models did eventually
+    overfit much more severely - achieving training set accuracy of around 90\%
+    but only 70\% test accuracy and log-loss of 1.09. Small changes in the
+    dropout rate had very little effect upon the performance of the RNN. The
+    confusion matrix is given in table \ref{tab:rnn_res}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{0cm}}
+\multicolumn{1}{m{1cm}}{} & \multicolumn{1}{m{1cm}}{EAP} & \multicolumn{1}{m{1cm}}{HPL} & \multicolumn{1}{m{1cm}}{MWS} &\\[5pt]
+\cline{2-4}
+EAP & 721 & 261 & 120 & \\[5pt]
+\cline{2-4}
+HPL & 163 & 1218 & 219 & \\[5pt]
+\cline{2-4}
+MWS & 120 & 311 & 783 & \\[5pt]
+\cline{2-4}
+\end{tabular}
+\caption{Final results for RNN\\Loss 1.09 Accuracy: 60\% }
+\label{tab:rnn_res}
+\end{table}
+
+
     \subsection{Ensemble}
     \label{sec:ensemble}
 
