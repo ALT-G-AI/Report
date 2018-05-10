@@ -38,7 +38,7 @@
 
     Figure \ref{fig:learn_rate_0.0001} shows the results for training using a
     learning rate of 0.0001. At this learning rate the GRU saw slight improvements in
-    accuracy with increasing number of neurons up to 100 neurons, after which
+    accuracy with an increasing number of neurons up to 100, after which
     accuracy declined. This decline was likely due to minor overfitting of the
     training set. However, even the lowest dropout rates only approached
     performance on par with no dropout for the largest numbers of neurons
@@ -64,12 +64,12 @@
     of 0.001. At this higher learning rate there was a clear performance
     degradation as the number of neurons was increased, particularly up to 100
     neurons. The results are also far more chaotic, with measurements spiking up
-    and down. In further tests it was found that there was a high variance in
-    the results at this learning rate. Results at a further increased learning
-    rate of 0.01 varied so much as to be un-reproducible. This suggests that a
-    learning rate of 0.001 was too high to capture the features of this
-    optimisation problem, with the issue worsening as neurons are added:
-    adding complexity to the fitness landscape.
+    and down. In further tests it was confirmed that there was a higher variance in
+    the results at this learning rate compared to the previous. Results at a
+    further increased learning rate of 0.01 varied so much as to be
+    un-reproducible. This suggests that a learning rate of 0.001 was too high to
+    capture the features of this optimisation problem, with the issue worsening
+    as neurons are added: increasing the complexity of the fitness landscape.
     This higher learning rate achieved the highest accuracies in the test when
     using smaller neurons. This may indicate that the smaller 0.0001 learning rate grid
     search had not trained over sufficient epochs before stopping - giving the
