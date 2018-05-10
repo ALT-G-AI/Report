@@ -53,8 +53,35 @@ MWS & 615 & 381 & 3834 & \\[5pt]
 \label{tab:bow_cw}
 \end{table}
 
-\subsection{Forest}
+\subsection{Random Forest}
 \label{sec:forest}
+
+Based on impressive successes in software author recognition using random forest
+methods \cite{c3}, there was interest in the accuracy of a random forest
+predictor, even with its unsuitability for use in a competition judged by
+log-loss. However, to minimise time spent on this diversion, the forest was only
+fed the Word2Vec encoded sentences directly.
+
+Unfortunately the forest only managed 54\% accuracy. The performance
+on the training data was no different than on testing data and so this was not a
+generalisation issue - the forest was just not complex enough to learn the
+classification rule, resulting in high bias.
+
+The forest suffered a 14\% performance degradation if trained from only windows
+instead of full (padded) sentences. It suffered a further 20\% performance
+degradation if trained using one-hot encoded labels instead of simply numbering
+the class labels. Forest performance was not sensitive to the forest size beyond
+200 classifiers. 
+
+\subsection{Linear SVM}
+\label{sec:svm}
+
+As almost all code could be shared with the random forest, an SVM was also
+tried. A linear kernel was used because the padded input sentence was already a
+2500-dimensional space and so would be likely to be linearly separable.
+
+The Linear SVM achieved 52\% accuracy, with identical precision and recall
+scores (indicating no bias to one class over another).
 
 \subsection{Windowed Neural Network}
 \label{sec:win_nn}

@@ -153,6 +153,14 @@ MWS & 286 & 582 & 3962 & \\[5pt]
     \subsection{Ensemble}
     \label{sec:ensemble}
 
+    It was expected that the windowed neural network and the bag of words neural
+    network would be reasonably uncorrelated because they used such different
+    input features. To take advantage of this they were combined into an
+    ensemble using a single densely connected perceptron layer with sigmoid
+    activation to combine their weights. However, when tested, this ensemble
+    performed the same as the bag of words neural network, presumably having
+    learnt to reproduce its output.
+
 \subsection{KPCA}
 \label{sec:kpca}
   
