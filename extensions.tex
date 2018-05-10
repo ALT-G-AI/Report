@@ -80,8 +80,19 @@ MWS & 286 & 582 & 3962 & \\[5pt]
   \label{sec:forest_extension}
 
   Following the success of the bag-of-words neural net, the same features were
-  used with a random forest: achieving 82\% accuracy even with only 4 estimators
-  (and no further improvement in accuracy as the number of estimators is increased).
+  used with a random forest: achieving 78.8\% accuracy even with only 4
+  estimators. From 80 estimators upwards\footnote{Tested up to 40000 estimators}
+  the accuracy does not go above 83\%.
+
+  \subsection{SVM}
+  \label{sec:svm_extension}
+
+  The bag-of-words features were also used to train a SVM. RBF, polynomial, and
+  linear kernels achieved 83\% accuracy. A sigmoid kernel managed only 67\%.
+
+  The SVM, Random Forest and probabilistic neural network all top out at 83\%
+  accuracy so this is likely to be the highest possible accuracy given the bag
+  of words features. 
 
   \subsection{RNN}
   \label{sec:rnn_grid_search}
