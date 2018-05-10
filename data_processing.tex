@@ -7,6 +7,7 @@
 
   \subsection{Word2Vec}
   \label{sec:word2vec}
+  Words must be embedded into a numerical space for the majority of learning methods. Word2Vec uses a two-layer neural network to autoencode the words against their neighbours in the input corpus. Word2Vec produces word encodings in a large vector-spaces. Semantic analogies are preserved in the space, (i.e. $queen - king + man = woman$). We trained Word2Vec on our own corpus to embed words for most of our algorithms, however, for our windowed deep neural network, we used the `Global Vectors for Word Representation` (GloVe) algorithm using a pre-trained vector of 6B words from wikipedia. This larger dataset should improve the quality of the word vectors.
 
   \subsection{Sentence Transformations}
   \label{sec:sentence_transformations}
@@ -14,4 +15,3 @@
 
   \subsection{Label Encoding}
   \label{sec:label_encoding}
-  
