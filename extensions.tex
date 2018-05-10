@@ -84,6 +84,22 @@ MWS & 286 & 582 & 3962 & \\[5pt]
   estimators. From 80 estimators upwards\footnote{Tested up to 40000 estimators}
   the accuracy does not go above 83\%.
 
+  \begin{table}[h]
+\centering
+\begin{tabular}{m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{0cm}}
+\multicolumn{1}{m{1cm}}{} & \multicolumn{1}{m{1cm}}{EAP} & \multicolumn{1}{m{1cm}}{HPL} & \multicolumn{1}{m{1cm}}{MWS} &\\[5pt]
+\cline{2-4}
+EAP & 3742 & 549 & 242 & \\[5pt]
+\cline{2-4}
+HPL & 403 & 5335 & 562 & \\[5pt]
+\cline{2-4}
+MWS & 288 & 600 & 3942 & \\[5pt]
+\cline{2-4}
+\end{tabular}
+\caption{Final results for Random Forest (80 trees)\\Accuracy: 83\% }
+\label{tab:forest_res}
+\end{table}
+
   \subsection{SVM}
   \label{sec:svm_extension}
 
@@ -93,6 +109,22 @@ MWS & 286 & 582 & 3962 & \\[5pt]
   The SVM, Random Forest and probabilistic neural network all top out at 83\%
   accuracy so this is likely to be the highest possible accuracy given the bag
   of words features. 
+
+    \begin{table}[h]
+\centering
+\begin{tabular}{m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{0cm}}
+\multicolumn{1}{m{1cm}}{} & \multicolumn{1}{m{1cm}}{EAP} & \multicolumn{1}{m{1cm}}{HPL} & \multicolumn{1}{m{1cm}}{MWS} &\\[5pt]
+\cline{2-4}
+EAP & 3768 & 517 & 248 & \\[5pt]
+\cline{2-4}
+HPL & 421 & 5288 & 591 & \\[5pt]
+\cline{2-4}
+MWS & 292 & 608 & 3930 & \\[5pt]
+\cline{2-4}
+\end{tabular}
+\caption{Final results for SVM (RBF Kernel)\\Accuracy: 83\% }
+\label{tab:forest_res}
+\end{table}
 
   \subsection{RNN}
   \label{sec:rnn_grid_search}
@@ -188,7 +220,7 @@ HPL & 163 & 1218 & 219 & \\[5pt]
 MWS & 120 & 311 & 783 & \\[5pt]
 \cline{2-4}
 \end{tabular}
-\caption{Final results for RNN\\Loss 1.09 Accuracy: 60\% }
+\caption{Final results for RNN\\Loss 1.09 Accuracy: 70\% }
 \label{tab:rnn_res}
 \end{table}
 
