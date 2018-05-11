@@ -238,15 +238,9 @@ MWS & 120 & 311 & 783 & \\[5pt]
   
   \subsection{Translation}
   \label{sec:translation}
- To improve the results of some classifiers, the dataset was enhanced by adding
- translations of the sentences through an intermediate language back into
- English. This method was shown to work in a previous Kaggle competition, 'Toxic
- Comments' \cite{Jigsaw2017}. Author classification is a different application
- however, as the 'Toxic Comments' categorises based on the sentiment whereas
- author classification challenge is based on the stylistic properties of each given author.
+After speaking to one of the PhD students they recommended looking at the 'Toxic Comments' Kaggle competition \cite{Jigsaw2017} kernels. Upon looking  at some of the kernels it was noted that when an intermediate language was used to enhance the dataset they saw an improvement in Loss. This is a different application however as it categorises based on the sentiment whereas this challenge is based on the stylistic properties of a given author so it's not obvious if this technique would work.
   
-  The thought behind doing this is that there are very few sentences currently,
-  and by augmenting data with translation we can get more data to perform analysis on. To do this \textit{TextBlob} was used to translate the sentences in to German, Spanish and French and then back from each respective language into English. 
+  As there are very few sentences currently, by using the translations, we can get more data to perform analysis on. Pavel Ostyakov \cite{Ostyakov2018} has already written a nice function that performs this function. To do this \textit{TextBlob} is used to translate the sentences in to German, Spanish and French and then back from each respective language into English. 
   
   Although some style may be lost in translation, it appears as though there is
   some reduction in the loss of around 0.03 by using translations with the
@@ -258,11 +252,11 @@ MWS & 120 & 311 & 783 & \\[5pt]
 \begin{tabular}{m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{0cm}}
 \multicolumn{1}{m{1cm}}{} & \multicolumn{1}{m{1cm}}{EAP} & \multicolumn{1}{m{1cm}}{HPL} & \multicolumn{1}{m{1cm}}{MWS} &\\[5pt]
 \cline{2-4}
-EAP & 0.826 & 0.120 & 0.0540 & \\[5pt]
+EAP & 14952 & 2193 & 987 & \\[5pt]
 \cline{2-4}
-HPL & 0.067 & 0.847 & 0.086 & \\[5pt]
+HPL & 1669 & 21372 & 2159 & \\[5pt]
 \cline{2-4}
-MWS & 0.054 & 0.120 & 0.826 & \\[5pt]
+MWS & 1046 & 2330 & 15944 & \\[5pt]
 \cline{2-4}
 \end{tabular}
 \caption{Results for bag-of-words feature kernel neural net, stemming and lemmatisation enabled, using a translated enhanced data set.\\Loss 0.43 Accuracy: 83\% }
