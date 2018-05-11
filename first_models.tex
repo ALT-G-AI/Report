@@ -53,8 +53,36 @@ MWS & 615 & 381 & 3834 & \\[5pt]
 \label{tab:bow_cw}
 \end{table}
 
-\subsection{Forest}
+\subsection{Random Forest}
 \label{sec:forest}
+
+Based on impressive successes in software author recognition using random forest
+methods \cite{c3}, there was interest in the accuracy of a random forest
+predictor. Unfortunately the random forest will not be suitable for entry into
+the log-loss judged Kaggle competition because it outputs only the class
+prediction and not any certainties about the prediction.
+Initially the forest was fed encoded sentences directly.
+
+Unfortunately the forest only managed 54\% accuracy. The performance
+on the training data was no different than on testing data and so this was not a
+generalisation issue - the forest was just not complex enough to learn the
+classification rule, resulting in high bias.
+
+The forest suffered a 14\% performance degradation if trained from only windows
+instead of full (padded) sentences. It suffered a further 20\% performance
+degradation if trained using one-hot encoded labels instead of simply numbering
+the class labels. Forest performance was not sensitive to the forest size beyond
+200 classifiers. 
+
+\subsection{Linear SVM}
+\label{sec:svm}
+
+As almost all code could be shared with the random forest, an SVM was also
+tried. A linear kernel was used because the padded input sentence was already a
+2500-dimensional space and so would be likely to be linearly separable.
+
+The Linear SVM achieved 52\% accuracy, with identical precision and recall
+scores (indicating no bias to one class over another).
 
 \subsection{Windowed Neural Network}
 \label{sec:win_nn}
@@ -163,3 +191,52 @@ MWS & 1019 & 525 & 3286 & \\[5pt]
 
 \subsection{RNN}
 \label{sec:rnn}
+  An obvious choice for textual input data was a recursive neural network.
+  Tensorflow made it simple to write a model which allowed a choice of recursive
+  cell (basic, LSTM or GRU) and so all three were investigated.  
+  
+  Figure \ref{fig:rnn-structure} shows the structure of the RNN. As recommended
+  by one of the PhD student project advisors, outputs were generated from a
+  dense network fed by the internal state of the recursive cell. This dense
+  network used a sigmoid activation function so that its outputs ranged between
+  0 and 1 and so could learn confidences for each author. 
+  
+  \begin{figure}[ht]
+    \includegraphics[width=0.45\textwidth]{Figures/rnn.png}
+    \caption{Recursive neural network structure}
+    \label{fig:rnn-structure}
+  \end{figure}
+  
+    The RNN was trained using cross-entropy loss and an Adam optimizer. Data
+    were fed in using randomized batches so that the data could all fit into GPU
+    memory and to improve generalisation performance. Initially a batch size of
+    100 sentences was used but this led to over-fitting of each batch even for
+    relatively small networks. When the batch size was increased to 200 this
+    problem lessened significantly because this larger batch provided a much
+    more representative sample of the dataset. 
+    
+    In early testing it was predictably found that the basic RNN cell was out
+    performed by LSTM and GRU cells. Less obviously, changing the weights
+    initialiser from Xavier (Tensorflow default) to He initialisation harmed
+    performance. 
+    
+    The prediction accuracy on the training dataset was observed to be slightly
+    higher than on the test dataset, particularly as the number of neurons used
+    in the recursive cell was increased. However, this difference remained
+    constant as networks were made larger and trained for longer - not showing
+    the characteristic increase in testing error as models overfit training
+    data. As a result of this behaviour early stopping was not implemented.
+    However the overfitting was combatted by imposing dropout during training.  
+    
+    Early experimentation also investigated the format of the encoded sentences.
+    A very significant (almost 30\%) accuracy improvement was gained by using
+    whole padded sentences instead of short windows into sentences. Presumably
+    the recursive networks were remembering some features throughout the
+    sentence. Stemming and stop word removal were also tested and found to have
+    a small detrimental effect. 
+    
+    By the end of this early phase, the RNN achieved 68\% accuracy, with similar
+    precision and recall scores: indicating no bias towards one class over
+    another. 
+    
+   
