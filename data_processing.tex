@@ -1,7 +1,7 @@
 \section{Data Processing}
 \label{sec:data_processing}
 
-Data processing is used in this project to help improve feature extraction from sentences as due to their length as much meta data as possible needs to be created to aid classification.
+Data processing is used in this project to improve feature extraction from sentences as due to their length as much meta data as possible needs to be created to aid classification.
 
   \subsection{Preprocessing}
   \label{sec:preprocessing}
@@ -15,19 +15,3 @@ Data processing is used in this project to help improve feature extraction from 
   Word2Vec uses a two-layer neural network to autoencode words using their neighbours in the input corpus. The resulting space is of far lower dimensionality, and preserves semantic relationships, (i.e. $queen - king + man = woman$). A Word2Vec embedding was trained on our own corpus. However due to the relatively small dataset, it is likely that this embedding does not strongly enforce relationships between words and will not contain words that are present in the test data.
   
 To address this, a pre-trained encoding was also used: A `Global Vectors for Word Representation` (GloVe) representation trained on 6 billion words from wikipedia.
-
-  \subsection{Sentence Transformations}
-  \label{sec:sentence_transformations}
-
-    For many learning machines, inputs of fixed length
-    are required. Two methods have been used throughout this project: padding
-    (or truncating) sentences to a known length and
-    windowing. Several windows can be gained from each
-    sentence: augmenting the dataset.
-
-    Two encodings for the class labels have been experimented with: one hot
-    encoding and assigning integers to each class.
-
-\subsection{Author representation}
-\label{sec:author_representation}
-For many classifiers, supplying labels as plain text is not possible. As such, two numerical encodings have been utilised as appropriate: one-hot encoding and integer assignment.
