@@ -56,11 +56,11 @@ MWS & 615 & 381 & 3834 & \\[5pt]
 \subsection{Random Forest}
 \label{sec:forest}
 
-Based on impressive successes in software author recognition using random forest
-methods \cite{c3}, there was interest in the accuracy of a random forest
-predictor. Unfortunately the random forest will not be suitable for entry into
-the log-loss judged Kaggle competition because it outputs only the class
-prediction and not any certainties about the prediction.
+Based on impressive success in software author recognition using random forest
+methods \cite{c3}, a classifier of this type was pursued. Unfortunately the random forest will not be directly suitable for entry into
+the log-loss judged Kaggle competition because it outputs only class
+predictions and not certainties. Nonetheless, its performance was evaluated for comparison with other models.
+
 Initially the forest was fed encoded sentences directly.
 
 Unfortunately the forest only managed 54\% accuracy. The performance
@@ -78,8 +78,8 @@ the class labels. Forest performance was not sensitive to the forest size beyond
 \label{sec:svm}
 
 As almost all code could be shared with the random forest, an SVM was also
-tried. A linear kernel was used because the padded input sentence was already a
-2500-dimensional space and so would be likely to be linearly separable.
+tested. A linear kernel was used because the padded input sentence was already a
+2500-dimensional space and so was likely linearly separable.
 
 The Linear SVM achieved 52\% accuracy, with identical precision and recall
 scores (indicating no bias to one class over another).
@@ -91,6 +91,7 @@ In order to recognise tell-tale structures in the way sentences are composed, a 
 Using a word embedding of $d$ dimensions, a window of $n$ words is provided as the input to a neural network. These words are flattened into a $d \times n$ wide layer, and fed through some number of hidden Relu units before being fed to a classifying output layer. This overall structure is described in Figure \ref{fig:win_nn_structure}.
 
 \begin{figure}[h]
+\centering
 \def\layersep{2cm}
 \begin{tikzpicture}[shorten >=1pt,->,draw=black!50, node distance=\layersep]
     \tikzstyle{every pin edge}=[<-,shorten <=1pt]
@@ -192,8 +193,7 @@ MWS & 1019 & 525 & 3286 & \\[5pt]
 \subsection{RNN}
 \label{sec:rnn}
   An obvious choice for textual input data was a recursive neural network.
-  Tensorflow made it simple to write a model which allowed a choice of recursive
-  cell (basic, LSTM or GRU) and so all three were investigated.  
+  Three recursive cell types -- basic, LSTM and GRU -- were investigated.  
   
   Figure \ref{fig:rnn-structure} shows the structure of the RNN. As recommended
   by one of the PhD student project advisors, outputs were generated from a
@@ -212,7 +212,7 @@ MWS & 1019 & 525 & 3286 & \\[5pt]
     memory and to improve generalisation performance. Initially a batch size of
     100 sentences was used but this led to over-fitting of each batch even for
     relatively small networks. When the batch size was increased to 200 this
-    problem lessened significantly because this larger batch provided a much
+    problem lessened significantly as a larger batch provided a much
     more representative sample of the dataset. 
     
     In early testing it was predictably found that the basic RNN cell was out

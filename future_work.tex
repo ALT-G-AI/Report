@@ -1,13 +1,14 @@
 \section{Future Work}
 \label{sec:future_work}
+Though many classifiers have been attempted, there is room to improve and combine them in future extensions to this work.
 
-The ensemble could be expanded to include more classifiers and some additional
-features so that it could perhaps learn which classifier to prefer depending
-upon the features of the input sentence.
+The ensemble classification approach could be expanded to include more classifiers and some additional
+features so that it could learn which classifier to prefer depending
+upon the features of the input sentence, effectively utilising "expert" classifiers.
 
-At the moment the probabilistic model assumes that the probabilities that words
-occur in a sentence are independent of each-other. This is clearly not the case.
+Additionally, the current probabilistic model assumes that words
+occur in a sentence independently. This is clearly not the case, and is just a useful simplification.
 One way to extend the model would be to consider closer approximations to the
 true distribution, for example by considering pairs of words instead of words on
 their own or by considering a joint distribution with a sentiment or topic
-analysis. 
+analysis. This would also allow the probabilistic models to have an appreciation of word context, which is currently not present in that classifier.

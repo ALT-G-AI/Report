@@ -103,7 +103,7 @@ MWS & 288 & 600 & 3942 & \\[5pt]
   \subsection{SVM}
   \label{sec:svm_extension}
 
-  The bag-of-words features were also used to train a SVM. RBF, polynomial, and
+  The bag-of-words features were also used to train an SVM. RBF, polynomial, and
   linear kernels achieved 83\% accuracy. A sigmoid kernel managed only 67\%.
 
   The SVM, Random Forest and probabilistic neural network all top out at 83\%
@@ -126,7 +126,7 @@ MWS & 292 & 608 & 3930 & \\[5pt]
 \label{tab:forest_res}
 \end{table}
 
-  \subsection{RNN}
+  \subsection{RNN Grid Search}
   \label{sec:rnn_grid_search}
 
     It was not clear \textit{a priori} which hyper-parameter choices were
@@ -164,20 +164,13 @@ MWS & 292 & 608 & 3930 & \\[5pt]
     tested. For most of the data, there was a clear accuracy reduction from an
     increase in the dropout rate.
 
-    The LSTM cell performed much less well than GRU at this learning rate, with
+    The LSTM cell performed much worse than GRU at this learning rate, with
     classification accuracy quickly declining for numbers of neurons higher than
     110. The dropout rate was similarly detrimental as for the GRU at
     small numbers of neurons. As performance degraded at higher numbers of
     neurons, moderate dropout rates (up to 0.2) out-performed the network without
     dropout. This suggests more severe overfitting than for the GRU cell,
     perhaps because LSTM is a more complex construction. 
-
-    \begin{figure}[ht]
-      \includegraphics[width=0.45\textwidth]{Figures/n_neurons_plot-0-001.png}
-      \caption{Using a learning rate of 0.001: the relationship between the number of neurons in the recurrent
-        cell to classification accuracy for GRU and LSTM at each dropout rate.}
-      \label{fig:learn_rate_0.001}
-    \end{figure}
 
     Figure \ref{fig:learn_rate_0.001} shows results for a higher learning rate
     of 0.001. At this higher learning rate there was a clear performance
@@ -193,6 +186,13 @@ MWS & 292 & 608 & 3930 & \\[5pt]
     using smaller neurons. This may indicate that the smaller 0.0001 learning rate grid
     search had not trained over sufficient epochs before stopping - giving the
     higher learning rate the upper hand in the simpler learning problems.
+    
+        \begin{figure}[ht]
+      \includegraphics[width=0.45\textwidth]{Figures/n_neurons_plot-0-001.png}
+      \caption{Using a learning rate of 0.001: the relationship between the number of neurons in the recurrent
+        cell to classification accuracy for GRU and LSTM at each dropout rate.}
+      \label{fig:learn_rate_0.001}
+    \end{figure}
 
     Dropout rates seem to have had much less of an effect at this higher
     learning rate, however, the highest results were still mostly obtained by
@@ -238,14 +238,15 @@ MWS & 120 & 311 & 783 & \\[5pt]
   
   \subsection{Translation}
   \label{sec:translation}
-After speaking to one of the PhD students they recommended looking at the 'Toxic Comments' Kaggle competition \cite{Jigsaw2017} kernels. Upon looking  at some of the kernels it was noted that when an intermediate language was used to enhance the dataset they saw an improvement in Loss. This is a different application however as it categorises based on the sentiment whereas this challenge is based on the stylistic properties of a given author so it's not obvious if this technique would work.
+  The dataset used for training in this work is relatively small, and so any way to meaningfully augment it may be beneficial.
   
-  As there are very few sentences currently, by using the translations, we can get more data to perform analysis on. Pavel Ostyakov \cite{Ostyakov2018} has already written a nice function that performs this function. To do this \textit{TextBlob} is used to translate the sentences in to German, Spanish and French and then back from each respective language into English. 
+  In other natural language processing tasks, this is often achieved using translation to and from other languages. This creates new sentences that preserve general structure and sentiment, but differ in precise word choice.
   
-  Although some style may be lost in translation, it appears as though there is
-  some reduction in the loss of around 0.03 by using translations with the
-  Bag-of-words Feature Kernal Neural Net as seen in the Table
-  \ref{tab:bow_nn_res_tran}. The translation may also help reduce the over fitting.
+If the key to differentiating authors were precise patterns of word usage -- such as hallmark turns of phrase -- then this augmentation would likely be detrimental, as it would not preserve that sort of detail. However the success of the bag-of-words classifiers suggests that sentiment, subject and tone may be a better predictor of the author, in which case dataset augmentation may prove useful.
+
+This was achieved using a function by Pavel Ostavakov \cite{Ostyakov2018}. \textit{TextBlob} is used to translate sentences to German, Spanish and French and then back to English.
+  
+  Using the augmented dataset did not improve classification accuracy, but did slightly improve the loss score in the Bag-of-words Feature Kernal Neural Net. These results may be seen in Table \ref{tab:bow_nn_res_tran}.
   
 \begin{table}[h]
 \centering
@@ -263,14 +264,4 @@ MWS & 1046 & 2330 & 15944 & \\[5pt]
 \label{tab:bow_nn_res_tran}
 \end{table}
 
-  \subsection{kPCA}
-  \label{sec:kpca}
-    An attempt was made to use kernel principal component analysis (kPCA) to help to produce more separable data. To do this a kPCA was used on a Count Vectoriser and a Term Frequency – Inverse Document Frequency Vectoriser. The idea behind this is to try to make the data points more separable. Although a variety of vectorisers and kernels were used, none were able to improve the separation of data significantly.
-    
-  \begin{figure}[h]
-    \centering
-    \includegraphics[width=\columnwidth]{Figures/Extensions/kPCALemmaRBF.png}
-    \caption{kPCA performed on a Lemma Count Vectoriser using RBF kernel and a gamma of 0.04}
-    \label{fig:balance}
-  \end{figure}
   
