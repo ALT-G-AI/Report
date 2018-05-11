@@ -10,3 +10,5 @@ _minted-*
 auto/*
 *.bbl
 *.blg
+
+/**/Thumbs.db

@@ -235,7 +235,48 @@ MWS & 120 & 311 & 783 & \\[5pt]
     activation to combine their weights. However, when tested, this ensemble
     performed the same as the bag of words neural network, presumably having
     learnt to reproduce its output.
+  
+  \subsection{Translation}
+  \label{sec:translation}
+ To improve the results of some classifiers, the dataset was enhanced by adding
+ translations of the sentences through an intermediate language back into
+ English. This method was shown to work in a previous Kaggle competition, 'Toxic
+ Comments' \cite{Jigsaw2017}. Author classification is a different application
+ however, as the 'Toxic Comments' categorises based on the sentiment whereas
+ author classification challenge is based on the stylistic properties of each given author.
+  
+  The thought behind doing this is that there are very few sentences currently,
+  and by augmenting data with translation we can get more data to perform analysis on. To do this \textit{TextBlob} was used to translate the sentences in to German, Spanish and French and then back from each respective language into English. 
+  
+  Although some style may be lost in translation, it appears as though there is
+  some reduction in the loss of around 0.03 by using translations with the
+  Bag-of-words Feature Kernal Neural Net as seen in the Table
+  \ref{tab:bow_nn_res_tran}. The translation may also help reduce the over fitting.
+  
+\begin{table}[h]
+\centering
+\begin{tabular}{m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{0cm}}
+\multicolumn{1}{m{1cm}}{} & \multicolumn{1}{m{1cm}}{EAP} & \multicolumn{1}{m{1cm}}{HPL} & \multicolumn{1}{m{1cm}}{MWS} &\\[5pt]
+\cline{2-4}
+EAP & 0.826 & 0.120 & 0.0540 & \\[5pt]
+\cline{2-4}
+HPL & 0.067 & 0.847 & 0.086 & \\[5pt]
+\cline{2-4}
+MWS & 0.054 & 0.120 & 0.826 & \\[5pt]
+\cline{2-4}
+\end{tabular}
+\caption{Results for bag-of-words feature kernel neural net, stemming and lemmatisation enabled, using a translated enhanced data set.\\Loss 0.43 Accuracy: 83\% }
+\label{tab:bow_nn_res_tran}
+\end{table}
 
-\subsection{KPCA}
-\label{sec:kpca}
+  \subsection{kPCA}
+  \label{sec:kpca}
+    An attempt was made to use kernel principal component analysis (kPCA) to help to produce more separable data. To do this a kPCA was used on a Count Vectoriser and a Term Frequency – Inverse Document Frequency Vectoriser. The idea behind this is to try to make the data points more separable. Although a variety of vectorisers and kernels were used, none were able to improve the separation of data significantly.
+    
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=\columnwidth]{Figures/Extensions/kPCALemmaRBF.png}
+    \caption{kPCA performed on a Lemma Count Vectoriser using RBF kernel and a gamma of 0.04}
+    \label{fig:balance}
+  \end{figure}
   
