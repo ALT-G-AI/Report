@@ -87,9 +87,9 @@ MWS & 286 & 582 & 3962 & \\[5pt]
   
   \subsection{Translation}
   \label{sec:translation}
-  To try and improve the results from some of the classifiers the data an enhanced data set was created. To create the enhanced data set the original sentences were translated to and from an alternative language. This is from suggestions from a differing Kaggle competition 'Toxic Comments' \cite{Jigsaw2017}. 
+ To improve the results of some classifiers, the dataset was enhanced by adding translations of the sentences through an intermediate language back to English. This method was shown to work in a previous Kaggle competition, 'Toxic Comments' \cite{Jigsaw2017}. This is a different application however as it categorises based on the sentiment whereas this challenge is based on the stylistic properties of a given author.
   
-  The thought of doing this is as the sentences are very short we can get a more data to perform analysis on. To do this \textit{TextBlob} was used to translate the sentences in to German, Spanish and French and then back from each respective language into English. 
+  The thought behind doing this though, is as there are very few sentences currently, we can get more data to perform analysis on. To do this \textit{TextBlob} was used to translate the sentences in to German, Spanish and French and then back from each respective language into English. 
   
   Although an issue may be that some style lost in translation, it appears as though there is some enhancement in the loss by using translations of around 0.03 with the Bag-of-words Feature Kernal Neural Net as seen in the Table \ref{tab:bow_nn_res_tran}. The translation may also help prevent the over fitting that is seen without it.
   
@@ -111,7 +111,7 @@ MWS & 0.05424431 & 0.1199793 & 0.8257764 & \\[5pt]
 
   \subsection{kPCA}
   \label{sec:kpca}
-    An attempt was made to use kernel principal component analysis (kPCA) to help to produce more separable data. To do this a kPCA was used on a Count Vectorizer and a Term Frequency – Inverse Document Frequency Vectorizer. The idea behind this is to try to make the data points more separable. Although a variety of kernels were used and different vectorizers none were able to improve the separation of data significantly.
+    An attempt was made to use kernel principal component analysis (kPCA) to help to produce more separable data. To do this a kPCA was used on a Count Vectoriser and a Term Frequency – Inverse Document Frequency Vectoriser. The idea behind this is to try to make the data points more separable. Although a variety of vectorisers and kernels were used, none were able to improve the separation of data significantly.
     
   \begin{figure}[h]
     \centering
