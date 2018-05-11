@@ -91,7 +91,10 @@ After speaking to one of the PhD students they recommended looking at the 'Toxic
   
   As there are very few sentences currently, by using the translations, we can get more data to perform analysis on. Pavel Ostyakov \cite{Ostyakov2018} has already written a nice function that performs this function. To do this \textit{TextBlob} is used to translate the sentences in to German, Spanish and French and then back from each respective language into English. 
   
-  Although an issue may be that some style lost in translation, it appears as though there is some enhancement in the loss by using translations of around 0.03 with the Bag-of-words Feature Kernal Neural Net as seen in the Table \ref{tab:bow_nn_res_tran}. The translation may also help prevent the over fitting that is seen without it.
+  Although some style may be lost in translation, it appears as though there is
+  some reduction in the loss of around 0.03 by using translations with the
+  Bag-of-words Feature Kernal Neural Net as seen in the Table
+  \ref{tab:bow_nn_res_tran}. The translation may also help reduce the over fitting.
   
 \begin{table}[h]
 \centering
