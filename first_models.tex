@@ -18,7 +18,7 @@ p_{s}^a &= \prod\limits_{w\in s} p_{w}^a \\
 log(p_{s}^a &)= \sum\limits_{w\in s} log(p_{w}^a)
 \end{align*}
 
-During prediction, however, it is likely that certain words will not have occurred in the training data: a "miss". An intuitive way to handle this is to score authors first on the number of words they "hit", and then by the probability of those words. Denoting the words used by each author in the training set as $W_a$ and the set of authors $A$, the following scoring mechanism is introduced:
+During prediction, however, it is likely that certain words will not have occurred in the training data: a "miss". An intuitive way to handle this is to score authors first on the number of words they "hit", and then by the probability of those words. Denoting the words used by each author in the training set as $W_a$, the following scoring mechanism is introduced:
 
 \begin{align*}
 score(s,a) &= \sum\limits_{w\in s}
@@ -31,9 +31,9 @@ hits(s,a) &= \sum\limits_{w\in s}
 1 & w\in W_a \\
 0 & otherwise
 \end{cases}\\
-cands(s) &= a^* \in A : hits(s,a^*) = \max_a(hits(s,a))\\
-winner(s) &= \underset{a}{\arg\max}(score(s,a))\quad \forall a \in cands(s)
 \end{align*}
+
+Authors are scored first by $hits$, and then differentiated based on $score$
 
 Running this model on the training set with 3 cross-validation passes (such that each third of the training data is predicted based on a model trained on the remaining two-thirds) yields the confusion matrix and accuracy in Table \ref{tab:bow_cw}. Log-loss metrics are not available for this model as it doesn't produce output probabilities, only binary classifications.
 
@@ -56,11 +56,11 @@ MWS & 615 & 381 & 3834 & \\[5pt]
 \subsection{Random Forest}
 \label{sec:forest}
 
-Based on impressive successes in software author recognition using random forest
-methods \cite{c3}, there was interest in the accuracy of a random forest
-predictor. Unfortunately the random forest will not be suitable for entry into
-the log-loss judged Kaggle competition because it outputs only the class
-prediction and not any certainties about the prediction.
+Based on impressive success in software author recognition using random forest
+methods \cite{c3}, a classifier of this type was pursued. Unfortunately the random forest will not be directly suitable for entry into
+the log-loss judged Kaggle competition \cite{kaggle} because it outputs only class
+predictions and not certainties. Nonetheless, its performance was evaluated for comparison with other models.
+
 Initially the forest was fed encoded sentences directly.
 
 Unfortunately the forest only managed 54\% accuracy. The performance
@@ -78,8 +78,8 @@ the class labels. Forest performance was not sensitive to the forest size beyond
 \label{sec:svm}
 
 As almost all code could be shared with the random forest, an SVM was also
-tried. A linear kernel was used because the padded input sentence was already a
-2500-dimensional space and so would be likely to be linearly separable.
+tested. A linear kernel was used because the padded input sentence was already a
+2500-dimensional space and so was likely linearly separable.
 
 The Linear SVM achieved 52\% accuracy, with identical precision and recall
 scores (indicating no bias to one class over another).
@@ -88,52 +88,7 @@ scores (indicating no bias to one class over another).
 \label{sec:win_nn}
 In order to recognise tell-tale structures in the way sentences are composed, a classifier must be able to examine words in context. By running a window over the sentence tokens, this can be achieved.
 
-Using a word embedding of $d$ dimensions, a window of $n$ words is provided as the input to a neural network. These words are flattened into a $d \times n$ wide layer, and fed through some number of hidden Relu units before being fed to a classifying output layer. This overall structure is described in Figure \ref{fig:win_nn_structure}.
-
-\begin{figure}[h]
-\def\layersep{2cm}
-\begin{tikzpicture}[shorten >=1pt,->,draw=black!50, node distance=\layersep]
-    \tikzstyle{every pin edge}=[<-,shorten <=1pt]
-    \tikzstyle{neuron}=[circle,fill=black!25,minimum size=17pt,inner sep=0pt]
-    \tikzstyle{input neuron}=[neuron, fill=green!50];
-    \tikzstyle{output neuron}=[neuron, fill=red!50];
-    \tikzstyle{hidden neuron}=[neuron, fill=blue!50];
-    \tikzstyle{annot} = [text width=4em, text centered]
-
-    % Draw the input layer nodes
-    \foreach \name / \y in {1,...,4}
-    % This is the same as writing \foreach \name / \y in {1/1,2/2,3/3,4/4}
-        \node[input neuron, pin=left:Word \#\y] (I-\name) at (0,-\y) {};
-        
-    % Draw the hidden layer nodes
-    \foreach \name / \y in {1,...,5}
-        \path[yshift=0.5cm]
-            node[hidden neuron] (H-\name) at (\layersep,-\y cm) {};
-
-    % Draw the output layer node
-    \foreach \name / \y in {1,...,3}
-    	\path[yshift=-0.5cm]
-            node[output neuron] (G-\name) at (2*\layersep,-\y cm) {};
-
-    % Connect every node in the input layer with every node in the
-    % hidden layer.
-    \foreach \source in {1,...,4}
-        \foreach \dest in {1,...,5}
-            \path (I-\source) edge (H-\dest);
-
-    % Connect every node in the hidden layer with the output layer
-    \foreach \source in {1,...,5}
-        \foreach \dest in {1,...,3}
-            \path (H-\source) edge (G-\dest);
-
-    % Annotate the layers
-    \node[annot,above of=H-1, node distance=1cm] (hl) {Hidden Relu layer(s)};
-    \node[annot,left of=hl] {Input Flatten layer};
-    \node[annot,right of=hl] {Output Sigmoid layer};
-\end{tikzpicture}
-\caption{Windowed neural network structure}
-\label{fig:win_nn_structure}
-\end{figure}
+Using a word embedding of $d$ dimensions, a window of $n$ words is provided as the input to a neural network. These words are flattened into a $d \times n$ wide layer, and fed through some number of hidden Relu units before being fed to a classifying output layer.
 
 The word embedding for this network may either be built on the training set itself or imported from a pre-trained model. The former may create a more subject-specific embedding since it is trained on relevant data; however the relatively small corpus size means that the spacial relationship between words may be weaker and the likelihood of missing words in the test data may be higher.
 
@@ -192,8 +147,7 @@ MWS & 1019 & 525 & 3286 & \\[5pt]
 \subsection{RNN}
 \label{sec:rnn}
   An obvious choice for textual input data was a recursive neural network.
-  Tensorflow made it simple to write a model which allowed a choice of recursive
-  cell (basic, LSTM or GRU) and so all three were investigated.  
+  Three recursive cell types -- basic, LSTM and GRU -- were investigated.  
   
   Figure \ref{fig:rnn-structure} shows the structure of the RNN. As recommended
   by one of the PhD student project advisors, outputs were generated from a
@@ -212,7 +166,7 @@ MWS & 1019 & 525 & 3286 & \\[5pt]
     memory and to improve generalisation performance. Initially a batch size of
     100 sentences was used but this led to over-fitting of each batch even for
     relatively small networks. When the batch size was increased to 200 this
-    problem lessened significantly because this larger batch provided a much
+    problem lessened significantly as a larger batch provided a much
     more representative sample of the dataset. 
     
     In early testing it was predictably found that the basic RNN cell was out
@@ -221,8 +175,7 @@ MWS & 1019 & 525 & 3286 & \\[5pt]
     performance. 
     
     The prediction accuracy on the training dataset was observed to be slightly
-    higher than on the test dataset, particularly as the number of neurons used
-    in the recursive cell was increased. However, this difference remained
+    higher than on the test dataset. However, this difference remained
     constant as networks were made larger and trained for longer - not showing
     the characteristic increase in testing error as models overfit training
     data. As a result of this behaviour early stopping was not implemented.

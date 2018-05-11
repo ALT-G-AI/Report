@@ -1,23 +1,17 @@
 \section{Data Processing}
 \label{sec:data_processing}
 
+Data processing is used in this project to improve feature extraction from sentences as due to their length as much meta data as possible needs to be created to aid classification.
+
+  \subsection{Preprocessing}
+  \label{sec:preprocessing}
+  	Sentence preprocessing was conducted in order to clean the dataset prior to being fed into classifiers.
+  	Preprocessing steps include stemming, lemmatisation and stopword removal. These different options are made available separately so that classifiers can use them as required.
+
   \subsection{Word2Vec}
   \label{sec:word2vec}
-  Words must be embedded into a numerical space for the majority of learning methods. Word2Vec uses a two-layer neural network to autoencode the words against their neighbours in the input corpus. Word2Vec produces word encodings in large vector-spaces. Semantic analogies are preserved in the space, (i.e. $queen - king + man = woman$). We trained Word2Vec on our own corpus to embed words for most of our algorithms, however, for our windowed deep neural network, we used the `Global Vectors for Word Representation` (GloVe) algorithm using a pre-trained vector of 6B words from wikipedia. These two methods are compared in Table \ref{tab:window_res}.
-
-  \subsection{Sentence Transformations}
-  \label{sec:sentence_transformations}
-
-    It is necessary to transform the variable-length sentences to a fixed length
-    representation. Two methods have been used throughout the project: padding
-    (or truncating) sentences to known length using a special padding symbol and
-    producing windows into a sentence. Several windows can be gained from each
-    sentence: augmenting the dataset.
-
-    For example, the sentence \textit{``This process, however, afforded me no
-      means of ascertaining the dimensions of my dungeon [...]''} would produce windows
-    such as \texttt{['this', 'process', ',', 'however', ','], ['process', ',',
-      'however', ',', 'afforded'], [',', 'however', ',', 'afforded', 'me'], ...}
-
-    Two encodings for the class labels have been experimented with: one hot
-    encoding and assigning integers to each class.
+  One-hot encoding of words leads to impractically large dimensionality, and it is desirable to instead create a lower dimensional embedding for the vocabulary being used.
+  
+  Word2Vec uses a two-layer neural network to autoencode words using their neighbours in the input corpus. The resulting space is of far lower dimensionality, and preserves semantic relationships, (i.e. $queen - king + man = woman$). A Word2Vec embedding was trained on our own corpus. However due to the relatively small dataset, it is likely that this embedding does not strongly enforce relationships between words and will not contain words that are present in the test data.
+  
+To address this, a pre-trained encoding was also used: A `Global Vectors for Word Representation` (GloVe) representation trained on 6 billion words from wikipedia.

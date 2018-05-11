@@ -17,7 +17,7 @@ id17569 & It never once occurred \ldots & HPL \\
 \ldots & \ldots & \ldots \\ 
 \hline 
 \end{tabular} 
-\caption{The provided data, as in \textit{test.csv}.}
+\caption{The provided data, as in \textit{train.csv}.}
 \label{tab:data_form}
 \end{table}
 The three authors represented in this dataset are Edgar Allen Poe (\textit{EAP}), H.P Lovecraft (\textit{HPL}), and Mary Shelley (\textit{MWS}).
@@ -39,7 +39,7 @@ There is a slight bias in the dataset, but it is approximately balanced as shown
 
 A broad examination of the data offers some insight into the difference between these authors' styles. The first and most obvious attribute to examine is the sentence length, which is shown in Figure \ref{fig:senlen}. Whilst the three authors are all largely similar in their distribution of sentence lengths, there is a noticeable difference. This may, therefore, provide a useful feature for discriminating between classes.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=\columnwidth]{Figures/Data_Structure/senlen.png}
 \begin{tabular}{|c|c|c|}
@@ -61,11 +61,11 @@ EAP & 29.4 & 21.1 \\
 \subsection{Word Frequency}
 \label{sec:word_frequency}
 
-Another obvious way in which the authors may differ is their word choice; They are likely to favour different words, and their occurrence in a sentence may evidence their author.
+Another way in which the authors differ is their word choice; they are likely to favour different words, and their occurrence in a sentence may evidence their author.
 
-Figure \ref{fig:wordfreq_before} shows the most frequent words used by each author, and is not particularly useful; The majority of them are shared between authors. Removing stopwords produces the results in Figure \ref{fig:wordfreq_after}, which more uniquely identify the authors. At a glance these word sets don't seem to overlap a great deal, and so classifying sentences by the likelihood of each author to write them may be a productive approach.
+Figure \ref{fig:wordfreq_before} shows the most frequent words used by each author, and is not particularly useful; the majority of them are shared between authors. Removing stopwords produces the results in Figure \ref{fig:wordfreq_after}, which more uniquely identify the authors. At a glance these word sets don't seem to overlap a great deal, and so classifying sentences by the likelihood of each author may be a productive approach.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{subfigure}[b]{\columnwidth}
 \includegraphics[width=\textwidth]{Figures/Data_Structure/wordfreq_before.png}

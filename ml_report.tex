@@ -9,22 +9,22 @@
 \usepackage{euler}
 \usepackage{subcaption}
 \usepackage{caption}
-\usepackage[section]{placeins}
+%\usepackage[section]{placeins}
 \usepackage{hyperref}
 \usepackage[autostyle]{csquotes}
 \usepackage{tikz}
 \MakeOuterQuote{"}
 
-\usepackage[backend=biber,sorting=none, urldate=edtf, date=edtf]{biblatex}
+\usepackage[maxbibnames=4,backend=biber,sorting=none, urldate=edtf, date=edtf]{biblatex}
 \addbibresource{bibfile.bib}
 
 \usepackage{minted}
 
 \begin{document}
   \title{
-  COMP6208 Advanced Machine Learning Group Report\\
+  COMP62 Advanced Machine Learning Group Report\\
   \vspace{5mm}
-    Horror Author Classification
+    Spooky Author Identification
   }
   \author{
     Tom Eccles \texttt{\href{mailto:tde1g14@soton.ac.uk}{tde1g14@soton.ac.uk}} \and
@@ -37,7 +37,7 @@
   \maketitle
   %\tableofcontents
   \begin{abstract}
-    This report compares the effectiveness of neural nets and probabilistic techniques on classifying sentences taken from horror stories written by three different authors. The report also looks at the different methods of data processing that can be used and how they can be used to enhance the performance of the different approaches.
+    This report compares the effectiveness of various neural net and probabilistic techniques when applied to the Kaggle competition "Spooky Author Identification" \cite{kaggle}, in which three horror authors must be recognised by their writings. Overall a classification accuracy of 83\% and a loss of 0.43 is achieved using a combined neural net and bag-of-words approach.
   \end{abstract}
   
   \input{00_intro.tex}
@@ -50,5 +50,5 @@
     
   \printbibliography
   
-  \appendix
+  %\appendix
 \end{document}
