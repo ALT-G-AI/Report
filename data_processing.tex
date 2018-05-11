@@ -18,14 +18,14 @@ Data processing is used in this project to help improve feature extraction from 
 
     It is necessary to transform the variable-length sentences to a fixed length
     representation. Two methods have been used throughout the project: padding
-    (or truncating) sentences to known length using a special padding symbol and
+    (or truncating) sentences to a known length using a special padding symbol and
     producing windows into a sentence. Several windows can be gained from each
     sentence: augmenting the dataset.
 
     For example, the sentence \textit{``This process, however, afforded me no
       means of ascertaining the dimensions of my dungeon [...]''} would produce windows
-    such as \texttt{['this', 'process', ',', 'however', ','], ['process', ',',
-      'however', ',', 'afforded'], [',', 'however', ',', 'afforded', 'me'], ...}
+    such as \texttt{[this process , however ,], [process ,
+      however , afforded], [, however , afforded me], ...}
 
     Two encodings for the class labels have been experimented with: one hot
     encoding and assigning integers to each class.
