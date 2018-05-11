@@ -1,6 +1,104 @@
 \section{Extensions}
 \label{sec:extensions}
-  
+
+  \subsection{RNN}
+  \label{sec:rnn_grid_search}
+
+    It was not clear \textit{a priori} which hyper-parameter choices were
+    appropriate for the RNN. To find parameters a grid search was performed over
+    the number of neurons in the recursive cell, the kind of recursive cell
+    (LSTM or GRU), the dropout rate, and the learning rate.
+
+    \begin{figure}[ht]
+      \includegraphics[width=0.45\textwidth]{Figures/lstm_gru_plot.png}
+      \caption{Comparing the performance of LSTM and GRU cells over all
+        parameter measurements}
+      \label{fig:lstm_gru}
+    \end{figure}
+
+    Figure \ref{fig:lstm_gru} compares the performance of LSTM and GRU cells
+    over all measurements. The GRU cell achieved a higher
+    median, lower and upper quartile accuracy than the LSTM cell. However, including
+    outliers, the GRU cell was less consistent: achieving the lowest accuracy
+    single result. The highest accuracy was an LSTM cell but this was only by a
+    small margin.
+
+    \begin{figure}[ht]
+      \includegraphics[width=0.45\textwidth]{Figures/n_neurons_plot-0-0001.png}
+      \caption{Using a learning rate of 0.0001: the relationship between the number of neurons in the recurrent
+        cell to classification accuracy for GRU and LSTM at each dropout rate.}
+      \label{fig:learn_rate_0.0001}
+    \end{figure}
+
+    Figure \ref{fig:learn_rate_0.0001} shows the results for training using a
+    learning rate of 0.0001. At this learning rate the GRU saw slight improvements in
+    accuracy with an increasing number of neurons up to 100, after which
+    accuracy declined. This decline was likely due to minor overfitting of the
+    training set. However, even the lowest dropout rates only approached
+    performance on par with no dropout for the largest numbers of neurons
+    tested. For most of the data, there was a clear accuracy reduction from an
+    increase in the dropout rate.
+
+    The LSTM cell performed much less well than GRU at this learning rate, with
+    classification accuracy quickly declining for numbers of neurons higher than
+    110. The dropout rate was similarly detrimental as for the GRU at
+    small numbers of neurons. As performance degraded at higher numbers of
+    neurons, moderate dropout rates (up to 0.2) out-performed the network without
+    dropout. This suggests more severe overfitting than for the GRU cell,
+    perhaps because LSTM is a more complex construction. 
+
+    \begin{figure}[ht]
+      \includegraphics[width=0.45\textwidth]{Figures/n_neurons_plot-0-001.png}
+      \caption{Using a learning rate of 0.001: the relationship between the number of neurons in the recurrent
+        cell to classification accuracy for GRU and LSTM at each dropout rate.}
+      \label{fig:learn_rate_0.001}
+    \end{figure}
+
+    Figure \ref{fig:learn_rate_0.001} shows results for a higher learning rate
+    of 0.001. At this higher learning rate there was a clear performance
+    degradation as the number of neurons was increased, particularly up to 100
+    neurons. The results are also far more chaotic, with measurements spiking up
+    and down. In further tests it was confirmed that there was a higher variance in
+    the results at this learning rate compared to the previous. Results at a
+    further increased learning rate of 0.01 varied so much as to be
+    un-reproducible. This suggests that a learning rate of 0.001 was too high to
+    capture the features of this optimisation problem, with the issue worsening
+    as neurons are added: increasing the complexity of the fitness landscape.
+    This higher learning rate achieved the highest accuracies in the test when
+    using smaller neurons. This may indicate that the smaller 0.0001 learning rate grid
+    search had not trained over sufficient epochs before stopping - giving the
+    higher learning rate the upper hand in the simpler learning problems.
+
+    Dropout rates seem to have had much less of an effect at this higher
+    learning rate, however, the highest results were still mostly obtained by
+    the lower dropout rates. The cell type also seemed to have much less of an
+    effect. Perhaps the problems training with this higher learning rate also
+    reduced overfitting.
+
+    Following from the observations from the grid search, recursive neural
+    networks were trained using a learning rate of 0.0001 over 10 times as many
+    epochs using a variety of lower dropout rates. These models did eventually
+    overfit much more severely - achieving training set accuracy of around 90\%
+    but only 70\% test accuracy and log-loss of 1.09. Small changes in the
+    dropout rate had very little effect upon the performance of the RNN. The
+    confusion matrix is given in table \ref{tab:rnn_res}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{0cm}}
+\multicolumn{1}{m{1cm}}{} & \multicolumn{1}{m{1cm}}{EAP} & \multicolumn{1}{m{1cm}}{HPL} & \multicolumn{1}{m{1cm}}{MWS} &\\[5pt]
+\cline{2-4}
+EAP & 721 & 261 & 120 & \\[5pt]
+\cline{2-4}
+HPL & 163 & 1218 & 219 & \\[5pt]
+\cline{2-4}
+MWS & 120 & 311 & 783 & \\[5pt]
+\cline{2-4}
+\end{tabular}
+\caption{Final results for RNN\\Loss 1.09 Accuracy: 70\% }
+\label{tab:rnn_res}
+\end{table}
+
 \subsection{Beta Distribution Bag-of-words}
 \label{sec:bow_beta}
 The bag-of-words model described in Section \ref{sec:bag_of_words} has some substantial issues regarding the probability estimates $p_w^a$. Most notably is its bias towards words which occur only very few times, and only with a single author.
@@ -22,7 +120,7 @@ And has expectation:
 
 This can be used to form a new estimation for the word frequency for each author that doesn't unduly favour extremely rare words. Additionally, this formula still holds even when a word has not been observed in an author's vocabulary. Because of this the hierarchical scoring system presented in Section \ref{sec:bag_of_words} is not necessary and a direct comparison of probabilities between each author may be made. This also allows loss to be calculated.
 
-Utilising this new metric the confusion matrix , accuracy and loss are as in Table \ref{tab:beta_res}.
+Utilising this new metric the confusion matrix, accuracy and loss are as in Table \ref{tab:beta_res}.
 
 \begin{table}[h]
 \centering
@@ -106,7 +204,7 @@ MWS & 288 & 600 & 3942 & \\[5pt]
   The bag-of-words features were also used to train a SVM. RBF, polynomial, and
   linear kernels achieved 83\% accuracy. A sigmoid kernel managed only 67\%.
 
-  The SVM, Random Forest and probabilistic neural network all top out at 83\%
+  The SVM, random forest and probabilistic neural network all top out at 83\%
   accuracy so this is likely to be the highest possible accuracy given the bag
   of words features. 
 
@@ -126,104 +224,6 @@ MWS & 292 & 608 & 3930 & \\[5pt]
 \label{tab:forest_res}
 \end{table}
 
-  \subsection{RNN}
-  \label{sec:rnn_grid_search}
-
-    It was not clear \textit{a priori} which hyper-parameter choices were
-    appropriate for the RNN. To find parameters a grid search was performed over
-    the number of neurons in the recursive cell, the kind of recursive cell
-    (LSTM or GRU), the dropout rate, and the learning rate.
-
-    \begin{figure}[ht]
-      \includegraphics[width=0.45\textwidth]{Figures/lstm_gru_plot.png}
-      \caption{Comparing the performance of LSTM and GRU cells over all
-        parameter measurements}
-      \label{fig:lstm_gru}
-    \end{figure}
-
-    Figure \ref{fig:lstm_gru} compares the performance of LSTM and GRU cells
-    over all measurements. The GRU cell achieved a higher
-    median, lower and upper quartile accuracy than the LSTM cell. However, including
-    outliers, the GRU cell was less consistent: achieving the lowest accuracy
-    single result. The highest accuracy was an LSTM cell but this was only by a
-    small margin.
-
-    \begin{figure}[ht]
-      \includegraphics[width=0.45\textwidth]{Figures/n_neurons_plot-0-0001.png}
-      \caption{Using a learning rate of 0.0001: the relationship between the number of neurons in the recurrent
-        cell to classification accuracy for GRU and LSTM at each dropout rate.}
-      \label{fig:learn_rate_0.0001}
-    \end{figure}
-
-    Figure \ref{fig:learn_rate_0.0001} shows the results for training using a
-    learning rate of 0.0001. At this learning rate the GRU saw slight improvements in
-    accuracy with an increasing number of neurons up to 100, after which
-    accuracy declined. This decline was likely due to minor overfitting of the
-    training set. However, even the lowest dropout rates only approached
-    performance on par with no dropout for the largest numbers of neurons
-    tested. For most of the data, there was a clear accuracy reduction from an
-    increase in the dropout rate.
-
-    The LSTM cell performed much less well than GRU at this learning rate, with
-    classification accuracy quickly declining for numbers of neurons higher than
-    110. The dropout rate was similarly detrimental as for the GRU at
-    small numbers of neurons. As performance degraded at higher numbers of
-    neurons, moderate dropout rates (up to 0.2) out-performed the network without
-    dropout. This suggests more severe overfitting than for the GRU cell,
-    perhaps because LSTM is a more complex construction. 
-
-    \begin{figure}[ht]
-      \includegraphics[width=0.45\textwidth]{Figures/n_neurons_plot-0-001.png}
-      \caption{Using a learning rate of 0.001: the relationship between the number of neurons in the recurrent
-        cell to classification accuracy for GRU and LSTM at each dropout rate.}
-      \label{fig:learn_rate_0.001}
-    \end{figure}
-
-    Figure \ref{fig:learn_rate_0.001} shows results for a higher learning rate
-    of 0.001. At this higher learning rate there was a clear performance
-    degradation as the number of neurons was increased, particularly up to 100
-    neurons. The results are also far more chaotic, with measurements spiking up
-    and down. In further tests it was confirmed that there was a higher variance in
-    the results at this learning rate compared to the previous. Results at a
-    further increased learning rate of 0.01 varied so much as to be
-    un-reproducible. This suggests that a learning rate of 0.001 was too high to
-    capture the features of this optimisation problem, with the issue worsening
-    as neurons are added: increasing the complexity of the fitness landscape.
-    This higher learning rate achieved the highest accuracies in the test when
-    using smaller neurons. This may indicate that the smaller 0.0001 learning rate grid
-    search had not trained over sufficient epochs before stopping - giving the
-    higher learning rate the upper hand in the simpler learning problems.
-
-    Dropout rates seem to have had much less of an effect at this higher
-    learning rate, however, the highest results were still mostly obtained by
-    the lower dropout rates. The cell type also seemed to have much less of an
-    effect. Perhaps the problems training with this higher learning rate also
-    reduced overfitting.
-
-    Following from these observations from the grid search, recursive neural
-    networks were trained using a learning rate of 0.0001 over 10 times as many
-    epochs using a variety of lower dropout rates. These models did eventually
-    overfit much more severely - achieving training set accuracy of around 90\%
-    but only 70\% test accuracy and log-loss of 1.09. Small changes in the
-    dropout rate had very little effect upon the performance of the RNN. The
-    confusion matrix is given in table \ref{tab:rnn_res}
-
-\begin{table}[h]
-\centering
-\begin{tabular}{m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{0cm}}
-\multicolumn{1}{m{1cm}}{} & \multicolumn{1}{m{1cm}}{EAP} & \multicolumn{1}{m{1cm}}{HPL} & \multicolumn{1}{m{1cm}}{MWS} &\\[5pt]
-\cline{2-4}
-EAP & 721 & 261 & 120 & \\[5pt]
-\cline{2-4}
-HPL & 163 & 1218 & 219 & \\[5pt]
-\cline{2-4}
-MWS & 120 & 311 & 783 & \\[5pt]
-\cline{2-4}
-\end{tabular}
-\caption{Final results for RNN\\Loss 1.09 Accuracy: 70\% }
-\label{tab:rnn_res}
-\end{table}
-
 
     \subsection{Ensemble}
     \label{sec:ensemble}
@@ -235,7 +235,42 @@ MWS & 120 & 311 & 783 & \\[5pt]
     activation to combine their weights. However, when tested, this ensemble
     performed the same as the bag of words neural network, presumably having
     learnt to reproduce its output.
+  
+  \subsection{Translation}
+  \label{sec:translation}
+After speaking to one of the PhD students they recommended looking at the 'Toxic Comments' Kaggle competition \cite{Jigsaw2017} kernels. Upon looking  at some of the kernels it was noted that when an intermediate language was used to enhance the dataset they saw an improvement in loss. This is a different application however as it categorises based on the sentiment whereas this challenge is based on the stylistic properties of a given author so it's not obvious if this technique would work.
+  
+  As there are very few sentences currently, by using the translations, we can get more data to perform analysis on. Pavel Ostyakov \cite{Ostyakov2018} has already written a nice function that performs this task. To do this \textit{TextBlob} is used to translate the sentences in to German, Spanish and French and then back from each respective language into English. 
+  
+  Although some style may be lost in translation, it appears as though there is
+  some reduction in the loss of around 0.03 by using translations with the
+  Bag-of-words Feature Kernal Neural Net as seen in the Table
+  \ref{tab:bow_nn_res_tran}. The translation may also help reduce the over fitting.
+  
+\begin{table}[h]
+\centering
+\begin{tabular}{m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{0cm}}
+\multicolumn{1}{m{1cm}}{} & \multicolumn{1}{m{1cm}}{EAP} & \multicolumn{1}{m{1cm}}{HPL} & \multicolumn{1}{m{1cm}}{MWS} &\\[5pt]
+\cline{2-4}
+EAP & 14952 & 2193 & 987 & \\[5pt]
+\cline{2-4}
+HPL & 1669 & 21372 & 2159 & \\[5pt]
+\cline{2-4}
+MWS & 1046 & 2330 & 15944 & \\[5pt]
+\cline{2-4}
+\end{tabular}
+\caption{Results for bag-of-words feature kernel neural net, stemming and lemmatisation enabled, using a translated enhanced data set.\\Loss 0.43 Accuracy: 83\% }
+\label{tab:bow_nn_res_tran}
+\end{table}
 
-\subsection{KPCA}
-\label{sec:kpca}
+  \subsection{kPCA}
+  \label{sec:kpca}
+    An attempt was made to use kernel principal component analysis (kPCA) to help to produce more separable data. To do this a kPCA was used on a Count Vectoriser and a Term Frequency – Inverse Document Frequency Vectoriser. The idea behind this is to try to make the data points more separable. Although a variety of vectorisers and kernels were used, none were able to improve the separation of data significantly.
+    
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=\columnwidth]{Figures/Extensions/kPCALemmaRBF.png}
+    \caption{kPCA performed on a Lemma Count Vectoriser using RBF kernel and a gamma of 0.04}
+    \label{fig:balance}
+  \end{figure}
   

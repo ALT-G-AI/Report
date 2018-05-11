@@ -1,6 +1,14 @@
 \section{Data Processing}
 \label{sec:data_processing}
 
+Data processing is used in this project to help improve feature extraction from sentences as due to their length as much meta data as possible needs to be created to aid classification.
+
+  \subsection{Preprocessing}
+  \label{sec:preprocessing}
+    The sentences may be preprocessed: removing stop words, lemmatizing or
+    stemming the words, or encoding the sentences. All these processes use
+    generators which keeps resource use efficient.
+
   \subsection{Word2Vec}
   \label{sec:word2vec}
   Words must be embedded into a numerical space for the majority of learning methods. Word2Vec uses a two-layer neural network to autoencode the words against their neighbours in the input corpus. Word2Vec produces word encodings in large vector-spaces. Semantic analogies are preserved in the space, (i.e. $queen - king + man = woman$). We trained Word2Vec on our own corpus to embed words for most of our algorithms, however, for our windowed deep neural network, we used the `Global Vectors for Word Representation` (GloVe) algorithm using a pre-trained vector of 6B words from wikipedia. These two methods are compared in Table \ref{tab:window_res}.
@@ -10,14 +18,14 @@
 
     It is necessary to transform the variable-length sentences to a fixed length
     representation. Two methods have been used throughout the project: padding
-    (or truncating) sentences to known length using a special padding symbol and
+    (or truncating) sentences to a known length using a special padding symbol and
     producing windows into a sentence. Several windows can be gained from each
     sentence: augmenting the dataset.
 
     For example, the sentence \textit{``This process, however, afforded me no
       means of ascertaining the dimensions of my dungeon [...]''} would produce windows
-    such as \texttt{['this', 'process', ',', 'however', ','], ['process', ',',
-      'however', ',', 'afforded'], [',', 'however', ',', 'afforded', 'me'], ...}
+    such as \texttt{[this process , however ,], [process ,
+      however , afforded], [, however , afforded me], ...}
 
     Two encodings for the class labels have been experimented with: one hot
     encoding and assigning integers to each class.
