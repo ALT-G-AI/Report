@@ -39,7 +39,7 @@ There is a slight bias in the dataset, but it is approximately balanced as shown
 
 A broad examination of the data offers some insight into the difference between these authors' styles. The first and most obvious attribute to examine is the sentence length, which is shown in Figure \ref{fig:senlen}. Whilst the three authors are all largely similar in their distribution of sentence lengths, there is a noticeable difference. This may, therefore, provide a useful feature for discriminating between classes.
 
-\begin{figure}[b]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=\columnwidth]{Figures/Data_Structure/senlen.png}
 \begin{tabular}{|c|c|c|}
@@ -65,7 +65,7 @@ Another way in which the authors differ is their word choice; they are likely to
 
 Figure \ref{fig:wordfreq_before} shows the most frequent words used by each author, and is not particularly useful; the majority of them are shared between authors. Removing stopwords produces the results in Figure \ref{fig:wordfreq_after}, which more uniquely identify the authors. At a glance these word sets don't seem to overlap a great deal, and so classifying sentences by the likelihood of each author may be a productive approach.
 
-\begin{figure}[b]
+\begin{figure}[ht]
 \centering
 \begin{subfigure}[b]{\columnwidth}
 \includegraphics[width=\textwidth]{Figures/Data_Structure/wordfreq_before.png}
