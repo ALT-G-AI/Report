@@ -8,3 +8,5 @@ _minted-*
 *.out
 *.run.xml
 auto/*
+
+/**/Thumbs.db

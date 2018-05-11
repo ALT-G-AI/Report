@@ -1,9 +1,13 @@
 \section{Data Processing}
 \label{sec:data_processing}
 
+Data processing is used in this project to help improve feature extraction from sentences as due to their length as much meta data as possible needs to be created to aid classification.
+
   \subsection{Preprocessing}
   \label{sec:preprocessing}
-    \textbf{Renamed from ``Pipelines''}
+    The sentences may be preprocessed: removing stop words, lemmatizing or
+    stemming the words, or encoding the sentences. All these processes use
+    generators which keeps resource use efficient.
 
   \subsection{Word2Vec}
   \label{sec:word2vec}
